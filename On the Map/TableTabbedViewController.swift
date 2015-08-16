@@ -9,7 +9,10 @@
 import Foundation
 import UIKit
 
-class TableTabbedViewController: UIViewController {
+class TableTabbedViewController: UIViewController, UITableViewDataSource {
+    
+    var studentLocations: [StudentLocation] = [StudentLocation]()
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -20,13 +23,66 @@ class TableTabbedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                // Do any additional setup after loading the view, typically from a nib.
+        
+        let object = UIApplication.sharedApplication().delegate
+        let appDelegate = object as! AppDelegate
+        self.studentLocations = appDelegate.studentLocations
+        //println(self.studentLocations.count)
+        
+        if self.studentLocations.count == 0 {
+            
+            ParseClient.sharedInstance().refreshStudentLocations { (success, errorString) in
+                
+                if success {
+                    self.studentLocations = appDelegate.studentLocations
+                    //println(self.studentLocations.count)
+                } else
+                {
+                    self.studentLocations = appDelegate.studentLocations
+                    //println(self.studentLocations.count)
+                }
+                
+            }
+            
+        }
+        
+        dump(self.studentLocations)
+
+    }
+
+
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.studentLocations.count
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let reuseIndentifier = "StudentLocation"
+        
+        var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(reuseIndentifier) as? UITableViewCell
+        var studentRow = self.studentLocations[indexPath.row]
+        
+        if (cell != nil) {
+            
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIndentifier)
+            cell?.textLabel?.text = studentRow.firstName + " " + studentRow.lastName
+            cell?.detailTextLabel?.text = studentRow.mediaURL
+        
+        }
+        
+        
+        return cell!
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let url = studentLocations[indexPath.row].mediaURL
+        UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+        println(String(self.studentLocations[indexPath.row].mediaURL))
+        
+    }
+
     
 }

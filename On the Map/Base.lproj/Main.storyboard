@@ -128,7 +128,31 @@
                     <view key="view" contentMode="scaleToFill" id="F3O-As-ZfB">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="NPf-ZR-3zh">
+                                <rect key="frame" x="0.0" y="64" width="609" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentLocation" id="7al-bs-Qvt">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7al-bs-Qvt" id="41N-jA-Bxv">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="S7I-jF-hed" id="kOY-Bi-Ps4"/>
+                                    <outlet property="delegate" destination="S7I-jF-hed" id="fFt-58-dHh"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="NPf-ZR-3zh" firstAttribute="leading" secondItem="F3O-As-ZfB" secondAttribute="leadingMargin" constant="-16" id="L3N-ia-8pZ"/>
+                            <constraint firstItem="TPg-MP-ybr" firstAttribute="top" secondItem="NPf-ZR-3zh" secondAttribute="bottom" id="OUC-Id-nSy"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NPf-ZR-3zh" secondAttribute="trailing" constant="-25" id="gzN-2s-Ul8"/>
+                            <constraint firstItem="NPf-ZR-3zh" firstAttribute="top" secondItem="qOI-JM-jr0" secondAttribute="bottom" id="isl-Oo-Kv8"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 2" id="qAX-7e-INb"/>
                     <navigationItem key="navigationItem" title="List View" id="9Yc-jT-bDc"/>
@@ -157,10 +181,8 @@
                         <constraints>
                             <constraint firstItem="xdS-U6-HoO" firstAttribute="top" secondItem="IOU-kP-0Mi" secondAttribute="bottom" id="CHQ-U7-fk0"/>
                             <constraint firstItem="xdS-U6-HoO" firstAttribute="leading" secondItem="obS-cK-crH" secondAttribute="leadingMargin" constant="-16" id="QcR-TK-E0Q"/>
-                            <constraint firstAttribute="centerX" secondItem="xdS-U6-HoO" secondAttribute="centerX" id="Sgs-rA-wBY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xdS-U6-HoO" secondAttribute="trailing" constant="-16" id="U9w-4Q-B6X"/>
                             <constraint firstItem="uku-xZ-8cf" firstAttribute="top" secondItem="xdS-U6-HoO" secondAttribute="bottom" id="eKW-wG-K4f"/>
-                            <constraint firstAttribute="centerY" secondItem="xdS-U6-HoO" secondAttribute="centerY" constant="-7.5" id="knw-r4-mm6"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="qtl-Yi-yeq"/>
