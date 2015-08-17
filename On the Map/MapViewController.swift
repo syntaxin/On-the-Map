@@ -145,5 +145,22 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         self.navigationController!.pushViewController(controller, animated: true)
     }
     
+    func logout (sender:UIButton!) {
+        
+        UdacityClient.sharedInstance().logout() { (success, errorString) in
+            
+            if success {
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("login") as! LoginViewController
+                
+                self.navigationController!.presentViewController(controller, animated: false, completion: nil)
+            
+            } else {
+                
+                var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Could not logout")
+                alert.show()
+                return
+            }
+        }
+    }
 }
 

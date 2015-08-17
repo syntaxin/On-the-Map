@@ -15,7 +15,6 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
     
     var studentLocations: [StudentLocation] = [StudentLocation]()
     var tableViewController = UITableViewController(style: .Plain)
-    var refreshControl = UIRefreshControl()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -39,9 +38,6 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.dataSource = self
         tableView.delegate = self
 
-        
-        tableViewController.refreshControl = self.refreshControl
-        self.refreshControl.addTarget(self, action: "refreshPull", forControlEvents: .ValueChanged)
         
         self.view.addSubview(tableView)
 
@@ -88,7 +84,7 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("You selected cell #\(indexPath.row)!")
+
         let url = studentLocations[indexPath.row].mediaURL
         UIApplication.sharedApplication().openURL(NSURL(string: url)!)
     }
@@ -102,39 +98,36 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
             if success {
                 self.studentLocations = appDelegate.studentLocations
                 self.tableViewController.tableView.reloadData()
-                
             } else {
-                println("Refresh locations broke")
+                var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
+                alert.show()
+                return
             }
    
         }
 
     }
     
-    func refreshPull () {
-        
-        let object = UIApplication.sharedApplication().delegate
-        let appDelegate = object as! AppDelegate
-        ParseClient.sharedInstance().refreshStudentLocations { (success, errorString) in
-            
-            if success {
-                self.studentLocations = appDelegate.studentLocations
-                self.tableViewController.tableView.reloadData()
-                self.refreshControl.endRefreshing()
-                
-            } else {
-                println("Refresh locations broke")
-            }
-            
-        }
-        
-    }
     
     func addLocationClick (sender:UIButton!) {
         let controller = self.storyboard!.instantiateViewControllerWithIdentifier("AddOrEditLocation") as! PostViewController
         self.navigationController!.pushViewController(controller, animated: true)
     }
 
-
-    
+    func logout (sender:UIButton!) {
+        
+        UdacityClient.sharedInstance().logout() { (success, errorString) in
+            
+            if success {
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("login") as! LoginViewController
+                self.navigationController!.presentViewController(controller, animated: false, completion: nil)
+                
+            } else {
+                
+                var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Could not logout")
+                alert.show()
+                return
+            }
+        }
+    }
 }

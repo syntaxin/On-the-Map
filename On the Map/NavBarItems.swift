@@ -26,8 +26,15 @@ extension UIViewController {
         buttonAddLocation.addTarget(self, action: "addLocationClick:", forControlEvents: UIControlEvents.TouchUpInside)
         var buttonAddLocationRight: UIBarButtonItem = UIBarButtonItem(customView: buttonAddLocation)
         
+        let buttonLogout: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        buttonLogout.frame = CGRectMake(0, 0, 75, 40)
+        buttonLogout.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        buttonLogout.setTitle("Logout", forState: .Normal)
+        buttonLogout.addTarget(self, action: "logout:", forControlEvents: UIControlEvents.TouchUpInside)
+        var buttonLogoutLeft: UIBarButtonItem = UIBarButtonItem(customView: buttonLogout)
+        
         self.navigationItem.setRightBarButtonItems([buttonRefreshRight, buttonAddLocationRight], animated: true)
-
+        self.navigationItem.setLeftBarButtonItems([buttonLogoutLeft], animated: true)
         
     }
 

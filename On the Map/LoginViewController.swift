@@ -22,11 +22,18 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func loginButtonTouch(sender: AnyObject) {
-        UdacityClient.sharedInstance().login(usernameTextField.text, password: passwordTextField.text, hostViewController: self) { (success, errorString) in
-            if success {
-                self.completeLogin()
-            } else {
-                self.displayError(errorString)
+        if usernameTextField.text.isEmpty {
+            self.debugTextLabel.text = "Please enter a username"
+        } else if passwordTextField.text.isEmpty {
+            self.debugTextLabel.text = "Please enter a password"
+        } else {
+            
+            UdacityClient.sharedInstance().login(usernameTextField.text, password: passwordTextField.text, hostViewController: self) { (success, errorString) in
+                if success {
+                    self.completeLogin()
+                } else {
+                    self.displayError(errorString)
+                }
             }
         }
     }
