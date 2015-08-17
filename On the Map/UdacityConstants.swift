@@ -55,6 +55,11 @@ extension UdacityClient {
         static let Registered = "registered"
         static let Key = "key"
         
+        //User
+        static let lastName = "last_name"
+        static let firstName = "first_name"
+        static let websiteURL = "website_url"
+        static let location = "location"
     }
 }
 

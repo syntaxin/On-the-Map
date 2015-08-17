@@ -13,7 +13,6 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
     
     var studentLocations: [StudentLocation] = [StudentLocation]()
     
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.hidden = false
@@ -22,6 +21,7 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.addNavBarMenuItems()
         
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
@@ -75,6 +75,30 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
         let url = studentLocations[indexPath.row].mediaURL
         UIApplication.sharedApplication().openURL(NSURL(string: url)!)
     }
+    
+    func refreshClick (sender:UIButton!) {
+        
+        let object = UIApplication.sharedApplication().delegate
+        let appDelegate = object as! AppDelegate
+        ParseClient.sharedInstance().refreshStudentLocations { (success, errorString) in
+            
+            if success {
+                self.studentLocations = appDelegate.studentLocations
+                
+            } else {
+                println("Refresh locations broke")
+            }
+            
+        }
+
+        
+    }
+    
+    func addLocationClick (sender:UIButton!) {
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("AddOrEditLocation") as! PostViewController
+        self.navigationController!.pushViewController(controller, animated: true)
+    }
+
 
     
 }

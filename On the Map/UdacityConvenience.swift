@@ -13,7 +13,7 @@ import Foundation
 
 extension UdacityClient {
     
-
+    
     
     func login (username: String, password: String, hostViewController: UIViewController, completionHandler: (success: Bool, errorString: String?) -> Void) {
         
@@ -46,17 +46,19 @@ extension UdacityClient {
                     self.sessionID = parsedResult.valueForKeyPath("session.id") as? String
                     self.sessionExpiration = parsedResult.valueForKeyPath("session.expiration") as? String
                     
-                    let object = UIApplication.sharedApplication().delegate
-                    let appDelegate = object as! AppDelegate
+                    self.getPublicUserData(self.accountKey!) { (success, errorString) in
+                        
+                        if success {
+                            completionHandler(success: true, errorString: nil)
+                        } else {
+                            completionHandler(success: false, errorString: "Could not grab public user data")
+                        }
+                    }
                     
-                    appDelegate.udacityUserKey = self.accountKey!
-                
-                    completionHandler(success: true, errorString: nil)
-                
                 } else {
-                
+                    
                     completionHandler(success: false, errorString: parsedResult["error"] as! String)
-                
+                    
                 }
                 
             }
@@ -64,6 +66,48 @@ extension UdacityClient {
         task.resume()
         
     }
-    
+    func getPublicUserData (udacityUserId: String, completionHandler: (success: Bool, errorString: String?) -> Void) {
+        
+        let urlString = Constants.BaseURL + Methods.Users + "/" + udacityUserId
+        println(urlString)
+        let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
+        
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if error != nil {
+                
+                completionHandler(success: false, errorString: "Could not get the user data")
+            }
+            
+            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            var parsingError: NSError? = nil
+            let parsedResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! NSDictionary
+            
+            if parsedResult["user"] == nil {
+                
+                completionHandler(success: false, errorString: "Could not grab public user data")
+            
+            } else {
+                
+                let object = UIApplication.sharedApplication().delegate
+                let appDelegate = object as! AppDelegate
+                
+                appDelegate.udacityUserKey = parsedResult.valueForKeyPath("user." + UdacityClient.JSONResponseKeys.Key) as! String
+                appDelegate.firstName = parsedResult.valueForKeyPath("user." + UdacityClient.JSONResponseKeys.firstName) as! String
+                appDelegate.lastName = parsedResult.valueForKeyPath("user." + UdacityClient.JSONResponseKeys.lastName) as! String
+
+                
+                println(appDelegate.firstName)
+                println(appDelegate.lastName)
+                println(appDelegate.udacityUserKey)
+                
+                completionHandler(success: true, errorString: nil)
+
+            }
+
+            
+        }
+        task.resume()
+    }
 }
 

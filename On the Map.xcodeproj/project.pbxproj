@@ -23,6 +23,7 @@
 		49DF14601B7EE6A500595B9A /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF145F1B7EE6A500595B9A /* UdacityConstants.swift */; };
 		49DF14621B7EE6EA00595B9A /* UdacityClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF14611B7EE6EA00595B9A /* UdacityClient.swift */; };
 		49DF14681B7EF65000595B9A /* UdacityConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF14671B7EF65000595B9A /* UdacityConvenience.swift */; };
+		49F4A42D1B81A3A5002F9904 /* NavBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F4A42C1B81A3A5002F9904 /* NavBarItems.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		49DF145F1B7EE6A500595B9A /* UdacityConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
 		49DF14611B7EE6EA00595B9A /* UdacityClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityClient.swift; sourceTree = "<group>"; };
 		49DF14671B7EF65000595B9A /* UdacityConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConvenience.swift; sourceTree = "<group>"; };
+		49F4A42C1B81A3A5002F9904 /* NavBarItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarItems.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +180,7 @@
 		49F4A4291B814E1D002F9904 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				49F4A42C1B81A3A5002F9904 /* NavBarItems.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 				49BDEC1E1B8055F800536BCF /* ParseStudentLocation.swift in Sources */,
 				49DF145A1B7EE26100595B9A /* PostViewController.swift in Sources */,
 				49DF14621B7EE6EA00595B9A /* UdacityClient.swift in Sources */,
+				49F4A42D1B81A3A5002F9904 /* NavBarItems.swift in Sources */,
 				49DF14601B7EE6A500595B9A /* UdacityConstants.swift in Sources */,
 				49BDEC1A1B804BDC00536BCF /* ParseClient.swift in Sources */,
 			);

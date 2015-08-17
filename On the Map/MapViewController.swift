@@ -33,14 +33,16 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         self.studentLocations = appDelegate.studentLocations
         
-        if self.studentLocations.count == 0 {
-            
-                populateTheMap()
-
-                } else {
-                    println("Refresh locations broke")
-                }
-
+        populateTheMap()
+        
+//        if self.studentLocations.count == 0 {
+//            
+//                populateTheMap()
+//
+//                } else {
+//                    println("Refresh locations broke")
+//                }
+//
         }
     
     func annotateTheMap(){
@@ -107,52 +109,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    func addNavBarMenuItems()
-    {
-        
-        let buttonRefresh: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
-        buttonRefresh.frame = CGRectMake(0, 0, 40, 40)
-        buttonRefresh.setImage(UIImage(named:"listIcon"), forState: UIControlState.Normal)
-        buttonRefresh.addTarget(self, action: "refreshClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        var buttonRefreshRight: UIBarButtonItem = UIBarButtonItem(customView: buttonRefresh)
-        
-        
-        let buttonAddLocation: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
-        buttonAddLocation.frame = CGRectMake(0, 0, 40, 40)
-        buttonAddLocation.setImage(UIImage(named:"listIcon"), forState: UIControlState.Normal)
-        buttonAddLocation.addTarget(self, action: "addLocationClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        var buttonAddLocationRight: UIBarButtonItem = UIBarButtonItem(customView: buttonAddLocation)
-        
-        let buttonLogout: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
-        buttonLogout.frame = CGRectMake(0, 0, 40, 40)
-        buttonLogout.setImage(UIImage(named:"listIcon"), forState: UIControlState.Normal)
-        buttonLogout.addTarget(self, action: "buttonLogoutClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        var buttonLogoutLeft: UIBarButtonItem = UIBarButtonItem(customView: buttonLogout)
-        
-        self.navigationItem.setRightBarButtonItems([buttonRefreshRight, buttonAddLocationRight], animated: true)
-        self.navigationItem.setLeftBarButtonItems([buttonLogoutLeft], animated: true)
-        
-    }
-    
-    func refreshClick (sender:UIButton!) {
-        //println("Clear the Map")
-        
-        let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
-        mapView.removeAnnotations( annotationsToRemove )
-        
-        populateTheMap()
-        
-
-    }
-    
-    func addLocationClick (sender:UIButton!) {
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("AddOrEditLocation") as! PostViewController
-        self.navigationController!.pushViewController(controller, animated: true)
-    }
-    
-    func buttonLogoutClick (sender:UIButton!) {
-        println("Let me logout")
-    }
     
     func populateTheMap() {
     
@@ -172,5 +128,20 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
 
     }
+    
+    func refreshClick (sender:UIButton!) {
+
+        let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
+        mapView.removeAnnotations( annotationsToRemove )
+        
+        populateTheMap()
+
+    }
+    
+    func addLocationClick (sender:UIButton!) {
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("AddOrEditLocation") as! PostViewController
+        self.navigationController!.pushViewController(controller, animated: true)
+    }
+    
 }
 

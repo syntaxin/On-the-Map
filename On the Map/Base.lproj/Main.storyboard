@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vsZ-wT-Ioh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YFp-UR-bwY">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -241,14 +241,28 @@
                                         <state key="normal" title="Find location">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="findLocation:" destination="vsZ-wT-Ioh" eventType="touchUpInside" id="H78-zP-AsC"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gkR-ek-NmE">
+                                        <rect key="frame" x="257" y="56" width="87" height="30"/>
+                                        <state key="normal" title="Add location">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addLocation:" destination="vsZ-wT-Ioh" eventType="touchUpInside" id="KVu-7E-QuD"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="gkR-ek-NmE" secondAttribute="centerY" constant="-21" id="GKa-LJ-og4"/>
                                     <constraint firstAttribute="centerX" secondItem="QNe-Mz-eTy" secondAttribute="centerX" constant="0.5" id="M04-os-nY2"/>
                                     <constraint firstAttribute="centerY" secondItem="37x-OK-Zc8" secondAttribute="centerY" constant="-21" id="ZUh-WL-mQy"/>
                                     <constraint firstAttribute="centerX" secondItem="37x-OK-Zc8" secondAttribute="centerX" id="cCd-wH-naS"/>
                                     <constraint firstAttribute="centerY" secondItem="QNe-Mz-eTy" secondAttribute="centerY" constant="17" id="cdO-ll-sjN"/>
+                                    <constraint firstAttribute="centerX" secondItem="gkR-ek-NmE" secondAttribute="centerX" id="ckT-F8-2ZU"/>
                                     <constraint firstAttribute="height" constant="100" id="tas-i9-U5i"/>
                                 </constraints>
                             </view>
@@ -271,15 +285,16 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addLocationButton" destination="gkR-ek-NmE" id="rX5-fN-CR8"/>
                         <outlet property="findLocationButton" destination="37x-OK-Zc8" id="sA4-fP-TJ7"/>
-                        <outlet property="locationTextField" destination="QNe-Mz-eTy" id="On6-0A-tlN"/>
+                        <outlet property="inputTextField" destination="QNe-Mz-eTy" id="qZ8-xT-6M7"/>
                         <outlet property="mapView" destination="nV9-Mc-Yoq" id="fvb-Pk-Lgf"/>
                         <outlet property="questionLabel" destination="CSz-Jj-clw" id="iJQ-D3-Q4u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBK-eY-s3W" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="935" y="-546"/>
+            <point key="canvasLocation" x="929" y="-546"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="dIK-4r-obU">
