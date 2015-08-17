@@ -11,7 +11,11 @@ import UIKit
 
 class TableTabbedViewController: UIViewController, UITableViewDataSource {
     
+    let cellIdentifier = "StudentLocation"
+    
     var studentLocations: [StudentLocation] = [StudentLocation]()
+    var tableViewController = UITableViewController(style: .Plain)
+    var refreshControl = UIRefreshControl()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -26,6 +30,15 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         self.studentLocations = appDelegate.studentLocations
+        
+        var tableView = tableViewController.tableView
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.dataSource = self
+        
+        tableViewController.refreshControl = self.refreshControl
+        self.refreshControl.addTarget(self, action: "refreshPull", forControlEvents: .ValueChanged)
+        
+        self.view.addSubview(tableView)
         
         if self.studentLocations.count == 0 {
             
@@ -53,14 +66,13 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let reuseIndentifier = "StudentLocation"
         
-        var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(reuseIndentifier) as? UITableViewCell
+        var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as? UITableViewCell
         var studentRow = self.studentLocations[indexPath.row]
         
         if (cell != nil) {
             
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIndentifier)
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: cellIdentifier)
             cell?.textLabel?.text = studentRow.firstName + " " + studentRow.lastName
             cell?.detailTextLabel?.text = studentRow.mediaURL
         
@@ -84,13 +96,32 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
             
             if success {
                 self.studentLocations = appDelegate.studentLocations
+                self.tableViewController.tableView.reloadData()
+                
+            } else {
+                println("Refresh locations broke")
+            }
+   
+        }
+
+    }
+    
+    func refreshPull () {
+        
+        let object = UIApplication.sharedApplication().delegate
+        let appDelegate = object as! AppDelegate
+        ParseClient.sharedInstance().refreshStudentLocations { (success, errorString) in
+            
+            if success {
+                self.studentLocations = appDelegate.studentLocations
+                self.tableViewController.tableView.reloadData()
+                self.refreshControl.endRefreshing()
                 
             } else {
                 println("Refresh locations broke")
             }
             
         }
-
         
     }
     
