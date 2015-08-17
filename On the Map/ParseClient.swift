@@ -31,7 +31,9 @@ class ParseClient : NSObject {
         
         return Singleton.sharedInstance
     }
+
     
+/* Standardized JSON parsing function */
 
     class func parseJSONWithCompletionHandler(data: NSData, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
         

@@ -7,7 +7,9 @@
 //
 
 extension ParseClient {
+
     
+/* Create constants for the Parse API */
     struct Constants {
         
         //Parse Application ID
@@ -20,10 +22,14 @@ extension ParseClient {
         static let BaseURL : String = "https://api.parse.com/1/classes/StudentLocation"
 
     }
+
+/* Create methods for the Parse API */
     
     //Methods
     struct Methods {
         
+
+/* Create known JSON Response Keys when getting info from Parse API */        
         
     }
     // JSON Response Keys

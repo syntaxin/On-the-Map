@@ -13,7 +13,7 @@ import Foundation
 
 extension UdacityClient {
     
-    
+/* Login to Udacity */
     
     func login (username: String, password: String, hostViewController: UIViewController, completionHandler: (success: Bool, errorString: String?) -> Void) {
         
@@ -66,6 +66,9 @@ extension UdacityClient {
         task.resume()
         
     }
+    
+/* Get public information for a student of Udacity */
+    
     func getPublicUserData (udacityUserId: String, completionHandler: (success: Bool, errorString: String?) -> Void) {
         
         let urlString = Constants.BaseURL + Methods.Users + "/" + udacityUserId
@@ -103,6 +106,8 @@ extension UdacityClient {
         }
         task.resume()
     }
+ 
+/* Logout from the API and close the session */    
     
     func logout (completionHandler: (success: Bool, errorString: String?) -> Void) {
         

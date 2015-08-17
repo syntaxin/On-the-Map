@@ -7,6 +7,8 @@
 //
 
 import Foundation
+
+/* Define the StudentLocation */
 struct StudentLocation {
     
     var objectId = ""
@@ -20,6 +22,8 @@ struct StudentLocation {
     var createdAt = ""
     var updatedAt = ""
     //var ACL = ""
+
+/* Create an init from NSDictionary */
     
     init(dictionary: [String : AnyObject]) {
         
@@ -36,6 +40,8 @@ struct StudentLocation {
         //ACL = dictionary[ParseClient.JSONResponseKeys.ACL] as! String
 
     }
+ 
+/* Easily make an array from API results */
     
     static func studentLocationFromResults (results: [[String : AnyObject]]) -> [StudentLocation] {
         var studentLocations = [StudentLocation]()

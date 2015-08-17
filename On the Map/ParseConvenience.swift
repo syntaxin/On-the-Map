@@ -12,6 +12,9 @@ import UIKit
 
 extension ParseClient {
     
+    
+/* Refresh the shared Student Locations array */
+    
     func refreshStudentLocations (completionHandler: (success: Bool, errorString: String?) -> Void) {
         
         getStudentLocations() { (data,success,errorString) in
@@ -33,6 +36,7 @@ extension ParseClient {
     
     }
     
+ /* Getting Student Locations from the API */
     
     func getStudentLocations (completionHandler: (data: [StudentLocation]?, success: Bool, errorString: String?) -> Void) {
         
@@ -66,6 +70,8 @@ extension ParseClient {
         }
         task.resume()
     }
+  
+/* Lookup a single student's location to see if they already exist */
     
     func getStudentLocation(completionHandler: (success: Bool, data: String, errorString: String?) -> Void){
         
@@ -115,6 +121,8 @@ extension ParseClient {
         }
         task.resume()
     }
+  
+  /* If a student doesn't exist, just create a new student location */
     
     func postStudentLocation(location: String, mediaURL: String, latitude: Double, longitude: Double, completionHandler: (success: Bool, errorString: String?) -> Void){
         
@@ -144,6 +152,8 @@ extension ParseClient {
         completionHandler(success: true, errorString: nil)
     
     }
+ 
+/* If a student exists, update the exisitng record */
     
     func putStudentLocation(objectId: String, location: String, mediaURL: String, latitude: Double, longitude: Double, completionHandler: (success: Bool, errorString: String?) -> Void){
         

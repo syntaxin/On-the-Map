@@ -29,7 +29,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+
+/* Add shared menu items */
+        
         self.addNavBarMenuItems()
+
+/* Grab shared data */
         
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
@@ -39,10 +44,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
         
         self.studentLocations = appDelegate.studentLocations
+
+/* Populate the map with pins */
         
         populateTheMap()
 
     }
+    
+/* Helper function to reuse just for annotations */
     
     func annotateTheMap(){
         
@@ -71,7 +80,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     
-    
+ /* Decide pin style based on whether it's the same user as who's logged in */
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         
@@ -99,6 +108,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+/* Open a link in a browser when detail view is clicked */
     
     func mapView(mapView: MKMapView!, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
@@ -107,7 +117,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             UIApplication.sharedApplication().openURL(NSURL(string: url!)!)
         }
     }
-    
+
+/* Helper function to refresh data then annotate the map later */
     
     func populateTheMap() {
     
@@ -130,6 +141,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
 
     }
+   
+ /* Deliberate refresh of the map data */
     
     func refreshClick (sender:UIButton!) {
 
@@ -139,11 +152,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         populateTheMap()
 
     }
+ 
+/* Go the add/edit location viewController */
     
     func addLocationClick (sender:UIButton!) {
         let controller = self.storyboard!.instantiateViewControllerWithIdentifier("AddOrEditLocation") as! PostViewController
         self.navigationController!.pushViewController(controller, animated: true)
     }
+
+/* Logout and go back to signin */
     
     func logout (sender:UIButton!) {
         

@@ -11,6 +11,8 @@ import UIKit
 
 extension UIViewController {
 
+/* Add shared menu items on both the Map and Table views */
+    
     func addNavBarMenuItems()
     {
         

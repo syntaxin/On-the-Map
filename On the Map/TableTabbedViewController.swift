@@ -25,11 +25,14 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addNavBarMenuItems()
-    
+
+/* Grab shared data */
         
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         self.studentLocations = appDelegate.studentLocations
+
+/* Create the table view */
         
         var tableView = tableViewController.tableView
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -38,9 +41,10 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.dataSource = self
         tableView.delegate = self
 
-        
         self.view.addSubview(tableView)
 
+/* If the shared data is empty, attempt a refresh */
+        
         if self.studentLocations.count == 0 {
             
             ParseClient.sharedInstance().refreshStudentLocations { (success, errorString) in
@@ -49,7 +53,9 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
                     self.studentLocations = appDelegate.studentLocations
                 } else
                 {
-                    println(errorString)
+                    var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
+                    alert.show()
+                    return
                 }
                 
             }
@@ -59,11 +65,13 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
 
+/* Table view implementation - get cell count */
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.studentLocations.count
     }
-    
+
+/* Table view implemenatation - add cells */
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
@@ -82,12 +90,16 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
         
         return cell!
     }
+ 
+/* Open a browser to the link if a row is selected */
     
     func tableView(UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
         let url = studentLocations[indexPath.row].mediaURL
         UIApplication.sharedApplication().openURL(NSURL(string: url)!)
     }
+
+/* Deliberately refresh the list view */
     
     func refreshClick (sender:UIButton!) {
         
@@ -108,12 +120,15 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
 
     }
     
+/* Go to the add location view controller */
     
     func addLocationClick (sender:UIButton!) {
         let controller = self.storyboard!.instantiateViewControllerWithIdentifier("AddOrEditLocation") as! PostViewController
         self.navigationController!.pushViewController(controller, animated: true)
     }
 
+/* Logout of the app go back to login */
+    
     func logout (sender:UIButton!) {
         
         UdacityClient.sharedInstance().logout() { (success, errorString) in

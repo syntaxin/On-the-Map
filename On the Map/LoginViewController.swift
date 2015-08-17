@@ -21,6 +21,8 @@ class LoginViewController: UIViewController {
         self.configureUI()
     }
 
+/* Login to the app */
+    
     @IBAction func loginButtonTouch(sender: AnyObject) {
         if usernameTextField.text.isEmpty {
             self.debugTextLabel.text = "Please enter a username"
@@ -38,6 +40,9 @@ class LoginViewController: UIViewController {
         }
     }
     
+    
+/* Set up the Login UI to be a bit prettier */
+    
     func configureUI() {
         /* Configure background gradient */
         self.view.backgroundColor = UIColor.clearColor()
@@ -54,6 +59,8 @@ class LoginViewController: UIViewController {
         debugTextLabel.textColor = UIColor.whiteColor()
         
         }
+  
+ /* If login successful, continue onward function */
     
     func completeLogin() {
         dispatch_async(dispatch_get_main_queue(), {
@@ -63,6 +70,8 @@ class LoginViewController: UIViewController {
             self.presentViewController(controller, animated: true, completion: nil)
         })
     }
+
+/* If login unsuccessful, display a relevant message for what wen wrong */    
     
     func displayError(errorString: String?) {
         dispatch_async(dispatch_get_main_queue(), {
