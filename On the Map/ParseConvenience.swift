@@ -154,7 +154,6 @@ extension ParseClient {
         let lName = appDelegate.lastName
         
         let urlString = "https://api.parse.com/1/classes/StudentLocation/\(objectId)"
-        println(urlString)
         let url = NSURL(string: urlString)
         let request = NSMutableURLRequest(URL: url!)
         
@@ -165,9 +164,7 @@ extension ParseClient {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         request.HTTPBody = "{\"uniqueKey\": \"\(uniqueKey)\", \"firstName\": \"\(fName)\", \"lastName\": \"\(lName)\",\"mapString\": \"\(location)\", \"mediaURL\": \"\(mediaURL)\",\"latitude\": \(latitude), \"longitude\": \(longitude)}".dataUsingEncoding(NSUTF8StringEncoding)
-        
-        println("{\"uniqueKey\": \"\(uniqueKey)\", \"firstName\": \"\(fName)\", \"lastName\": \"\(lName)\",\"mapString\": \"\(location)\", \"mediaURL\": \"\(mediaURL)\",\"latitude\": \(latitude), \"longitude\": \(longitude)}")
-        
+
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             if error != nil { // Handle error…

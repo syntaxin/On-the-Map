@@ -15,18 +15,10 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var debugTextLabel: UILabel!
     
-    var appDelegate: AppDelegate!
-    var session: NSURLSession!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        /* Get the app delegate */
-        appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        /* Get the shared URL session */
-        session = NSURLSession.sharedSession()
-        
+        self.debugTextLabel.text = ""
+        self.configureUI()
     }
 
     @IBAction func loginButtonTouch(sender: AnyObject) {
@@ -41,20 +33,20 @@ class LoginViewController: UIViewController {
     
     func configureUI() {
         /* Configure background gradient */
-//        self.view.backgroundColor = UIColor.clearColor()
-//        let colorTop = UIColor(red: 0.345, green: 0.839, blue: 0.988, alpha: 1.0).CGColor
-//        let colorBottom = UIColor(red: 0.023, green: 0.569, blue: 0.910, alpha: 1.0).CGColor
-//        var backgroundGradient = CAGradientLayer()
-//        backgroundGradient.colors = [colorTop, colorBottom]
-//        backgroundGradient.locations = [0.0, 1.0]
-//        backgroundGradient.frame = view.frame
-//        self.view.layer.insertSublayer(backgroundGradient, atIndex: 0)
+        self.view.backgroundColor = UIColor.clearColor()
+        let colorTop = UIColor(red: 0.470, green: 0.592, blue: 0.933, alpha: 1.0).CGColor
+        let colorBottom = UIColor(red: 0.216, green: 0.369, blue: 0.792, alpha: 1.0).CGColor
+        var backgroundGradient = CAGradientLayer()
+        backgroundGradient.colors = [colorTop, colorBottom]
+        backgroundGradient.locations = [0.0, 1.0]
+        backgroundGradient.frame = view.frame
+        self.view.layer.insertSublayer(backgroundGradient, atIndex: 0)
         
         /* Configure debug text label */
-        debugTextLabel.font = UIFont(name: "AvenirNext-Medium", size: 20)
+        debugTextLabel.font = UIFont(name: "AvenirNext-Medium", size: 12)
         debugTextLabel.textColor = UIColor.whiteColor()
         
-        
+        /*Configure Button*/
         
         }
     

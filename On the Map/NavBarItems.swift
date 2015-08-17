@@ -16,13 +16,13 @@ extension UIViewController {
         
         let buttonRefresh: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         buttonRefresh.frame = CGRectMake(0, 0, 40, 40)
-        buttonRefresh.setImage(UIImage(named:"listIcon"), forState: UIControlState.Normal)
+        buttonRefresh.setImage(UIImage(named:"refreshIcon"), forState: UIControlState.Normal)
         buttonRefresh.addTarget(self, action: "refreshClick:", forControlEvents: UIControlEvents.TouchUpInside)
         var buttonRefreshRight: UIBarButtonItem = UIBarButtonItem(customView: buttonRefresh)
         
         let buttonAddLocation: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         buttonAddLocation.frame = CGRectMake(0, 0, 40, 40)
-        buttonAddLocation.setImage(UIImage(named:"listIcon"), forState: UIControlState.Normal)
+        buttonAddLocation.setImage(UIImage(named:"addIcon"), forState: UIControlState.Normal)
         buttonAddLocation.addTarget(self, action: "addLocationClick:", forControlEvents: UIControlEvents.TouchUpInside)
         var buttonAddLocationRight: UIBarButtonItem = UIBarButtonItem(customView: buttonAddLocation)
         

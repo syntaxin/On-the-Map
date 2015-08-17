@@ -18,6 +18,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     var studentLocations: [StudentLocation] = [StudentLocation]()
     var annotations = [MKPointAnnotation]()
     
+    var myFirstName: String!
+    var myLastName: String!
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.hidden = false
@@ -31,19 +34,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         
+        self.myFirstName = appDelegate.firstName
+        self.myLastName = appDelegate.lastName
+
+        
         self.studentLocations = appDelegate.studentLocations
         
         populateTheMap()
-        
-//        if self.studentLocations.count == 0 {
-//            
-//                populateTheMap()
-//
-//                } else {
-//                    println("Refresh locations broke")
-//                }
-//
-        }
+
+    }
     
     func annotateTheMap(){
         
@@ -60,15 +59,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             
             var annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            annotation.title = "\(first) \(last) from \(mapString)"
+            annotation.title = "\(first) \(last)"
             annotation.subtitle = mediaURL
             
             dispatch_async(dispatch_get_main_queue(), {
                 self.mapView.addAnnotation(annotation)
             })
-            
-            
-            
+
         }
         
     }
@@ -78,7 +75,18 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         
-        if annotation != nil {
+        if annotation.title == "\(self.myFirstName) \(self.myLastName)" {
+            let reuseId = "pin"
+            var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            
+            pinView?.canShowCallout = true
+            pinView?.pinColor = .Purple
+            pinView?.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as! UIButton
+            
+            return pinView
+        }
+        else {
             let reuseId = "pin"
             var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
@@ -88,15 +96,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             pinView?.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as! UIButton
             
             return pinView
-        }
-        else {
-            let reuseId = "pin"
-            
-            var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            
-            return pinView
-            
         }
     }
     
@@ -122,7 +121,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     self.annotateTheMap()
                 })
             } else {
-                println("Refresh locations broke")
+                
+                var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
+                alert.show()
+                return
             }
             
         }
