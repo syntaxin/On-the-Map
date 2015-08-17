@@ -16,7 +16,6 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         self.tabBarController?.tabBar.hidden = false
         
     }
@@ -27,7 +26,6 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         self.studentLocations = appDelegate.studentLocations
-        //println(self.studentLocations.count)
         
         if self.studentLocations.count == 0 {
             
@@ -35,19 +33,15 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
                 
                 if success {
                     self.studentLocations = appDelegate.studentLocations
-                    //println(self.studentLocations.count)
                 } else
                 {
-                    self.studentLocations = appDelegate.studentLocations
-                    //println(self.studentLocations.count)
+                    println(errorString)
                 }
                 
             }
             
         }
         
-        dump(self.studentLocations)
-
     }
 
 
@@ -80,8 +74,6 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
         
         let url = studentLocations[indexPath.row].mediaURL
         UIApplication.sharedApplication().openURL(NSURL(string: url)!)
-        println(String(self.studentLocations[indexPath.row].mediaURL))
-        
     }
 
     

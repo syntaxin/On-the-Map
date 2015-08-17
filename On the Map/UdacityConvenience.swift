@@ -36,12 +36,8 @@ extension UdacityClient {
             } else {
                 
                 let newData = data .subdataWithRange(NSMakeRange(5, data.length - 5))
-                
                 var parsingError: NSError? = nil
-                
                 let parsedResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! NSDictionary
-                
-                println(parsedResult)
                 
                 if parsedResult["status"] == nil {
                     
@@ -50,10 +46,10 @@ extension UdacityClient {
                     self.sessionID = parsedResult.valueForKeyPath("session.id") as? String
                     self.sessionExpiration = parsedResult.valueForKeyPath("session.expiration") as? String
                     
-//                    println(self.accountKey)
-//                    println(self.accountRegistered)
-//                    println(self.sessionID)
-//                    println(self.sessionExpiration)
+                    let object = UIApplication.sharedApplication().delegate
+                    let appDelegate = object as! AppDelegate
+                    
+                    appDelegate.udacityUserKey = self.accountKey!
                 
                     completionHandler(success: true, errorString: nil)
                 
@@ -62,9 +58,6 @@ extension UdacityClient {
                     completionHandler(success: false, errorString: parsedResult["error"] as! String)
                 
                 }
-//                
-//                println(parsedResult)
-//                println(parsedResult["status"])
                 
             }
         }

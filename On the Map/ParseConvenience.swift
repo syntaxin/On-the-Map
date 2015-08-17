@@ -26,7 +26,7 @@ extension ParseClient {
             } else
             
             {
-                completionHandler(success: false, errorString: "Could not refresh list")
+                completionHandler(success: false, errorString: errorString)
             }
         
         }
@@ -42,25 +42,21 @@ extension ParseClient {
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             if error != nil {
-                completionHandler(data: nil, success: false, errorString: "broken")
+                
+                completionHandler(data: nil, success: false, errorString: "Locations Request Broke")
             }
-            //println("convert data to array of locations")
-            //var parsingError: NSError? = nil
-            //let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! NSDictionary
             
             let parsedResult = ParseClient.parseJSONWithCompletionHandler(data) { result, error in
                 
                 if error != nil {
                     
-                    println("Parsing broke somehow")
+                    completionHandler(data: nil, success: false, errorString: "Parsing Broke")
                     
                 } else {
                     
                     
                     if let loc = result.valueForKey(ParseClient.JSONResponseKeys.studentLocationResults) as? [[String : AnyObject]] {
-                        
                         var studentLocations = StudentLocation.studentLocationFromResults(loc)
-                        
                         completionHandler(data: studentLocations, success: true, errorString: nil)
                         
                     }

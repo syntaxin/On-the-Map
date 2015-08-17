@@ -12,7 +12,6 @@ extension UdacityClient {
         
         //FacebookAppID
         static let FacebookAppID : String = "5626336eb68e2365362206864879"
-        
         //URLs
         static let BaseURL : String = "https://www.udacity.com/api/"
     }
@@ -21,8 +20,7 @@ extension UdacityClient {
     struct Methods {
         
         //Session
-        static let Session = "session"
-        
+        static let Session = "session"        
         //Users
         static let Users = "users"
 

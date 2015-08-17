@@ -8,18 +8,56 @@
 
 import Foundation
 import UIKit
+import MapKit
 
-class PostViewController: UIViewController {
+class PostViewController: UIViewController, MKMapViewDelegate {
+    
+    @IBOutlet weak var questionLabel: UILabel!
+    @IBOutlet weak var locationTextField: UITextField!
+    @IBOutlet weak var findLocationButton: UIButton!
+    @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        self.tabBarController?.tabBar.hidden = true
+        mapView.delegate = self
+        
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
+    
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        
+        if annotation != nil {
+            let reuseId = "pin"
+            var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            
+            pinView?.canShowCallout = true
+            pinView?.pinColor = .Red
+            pinView?.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as! UIButton
+            
+            return pinView
+        }
+        else {
+            let reuseId = "pin"
+            
+            var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            
+            return pinView
+        
+        }
     }
     
+    
+    func mapView(mapView: MKMapView!, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        if control == annotationView.rightCalloutAccessoryView {
+            let url = annotationView.annotation.subtitle
+            UIApplication.sharedApplication().openURL(NSURL(string: url!)!)
+        }
+    }
+
     
 }
