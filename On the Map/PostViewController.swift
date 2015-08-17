@@ -149,7 +149,6 @@ class PostViewController: UIViewController, MKMapViewDelegate {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView?.canShowCallout = false
             pinView?.pinColor = .Purple
-            //pinView?.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as! UIButton
             
             return pinView
         }
