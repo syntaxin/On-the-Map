@@ -46,8 +46,6 @@ class LoginViewController: UIViewController {
         debugTextLabel.font = UIFont(name: "AvenirNext-Medium", size: 12)
         debugTextLabel.textColor = UIColor.whiteColor()
         
-        /*Configure Button*/
-        
         }
     
     func completeLogin() {

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class TableTabbedViewController: UIViewController, UITableViewDataSource {
+class TableTabbedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let cellIdentifier = "StudentLocation"
     
@@ -26,6 +26,7 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addNavBarMenuItems()
+    
         
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
@@ -34,12 +35,16 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
         var tableView = tableViewController.tableView
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
+        tableView.allowsSelection = true
+        tableView.dataSource = self
+        tableView.delegate = self
+
         
         tableViewController.refreshControl = self.refreshControl
         self.refreshControl.addTarget(self, action: "refreshPull", forControlEvents: .ValueChanged)
         
         self.view.addSubview(tableView)
-        
+
         if self.studentLocations.count == 0 {
             
             ParseClient.sharedInstance().refreshStudentLocations { (success, errorString) in
@@ -82,8 +87,8 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource {
         return cell!
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+    func tableView(UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println("You selected cell #\(indexPath.row)!")
         let url = studentLocations[indexPath.row].mediaURL
         UIApplication.sharedApplication().openURL(NSURL(string: url)!)
     }

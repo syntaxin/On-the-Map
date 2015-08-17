@@ -135,7 +135,7 @@ extension ParseClient {
 
                 let session = NSURLSession.sharedSession()
                 let task = session.dataTaskWithRequest(request) { data, response, error in
-                    if error != nil { // Handle error…
+                    if error != nil {
                         completionHandler(success: false, errorString: "Save was unsuccessful")
                     }
                 }
@@ -170,7 +170,6 @@ extension ParseClient {
             if error != nil { // Handle error…
                 completionHandler(success: false, errorString: "Update unsuccessful")
             } else {
-                println(NSString(data: data, encoding: NSUTF8StringEncoding))
                 completionHandler(success: true, errorString: nil)
             }
         }

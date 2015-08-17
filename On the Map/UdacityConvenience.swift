@@ -31,7 +31,7 @@ extension UdacityClient {
             
             if let error = downloadError {
                 
-                completionHandler(success: false, errorString: "Download error")
+                completionHandler(success: false, errorString: "Could not connect to login")
                 
             } else {
                 
@@ -51,13 +51,13 @@ extension UdacityClient {
                         if success {
                             completionHandler(success: true, errorString: nil)
                         } else {
-                            completionHandler(success: false, errorString: "Could not grab public user data")
+                            completionHandler(success: false, errorString: "Could not get your public user data")
                         }
                     }
                     
                 } else {
                     
-                    completionHandler(success: false, errorString: parsedResult["error"] as! String)
+                    completionHandler(success: false, errorString: "I had trouble speaking JSON")
                     
                 }
                 
@@ -69,7 +69,6 @@ extension UdacityClient {
     func getPublicUserData (udacityUserId: String, completionHandler: (success: Bool, errorString: String?) -> Void) {
         
         let urlString = Constants.BaseURL + Methods.Users + "/" + udacityUserId
-        println(urlString)
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
         
         let session = NSURLSession.sharedSession()
@@ -96,11 +95,6 @@ extension UdacityClient {
                 appDelegate.firstName = parsedResult.valueForKeyPath("user." + UdacityClient.JSONResponseKeys.firstName) as! String
                 appDelegate.lastName = parsedResult.valueForKeyPath("user." + UdacityClient.JSONResponseKeys.lastName) as! String
 
-                
-                println(appDelegate.firstName)
-                println(appDelegate.lastName)
-                println(appDelegate.udacityUserKey)
-                
                 completionHandler(success: true, errorString: nil)
 
             }
