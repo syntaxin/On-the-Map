@@ -39,8 +39,13 @@ extension ParseClient {
  /* Getting Student Locations from the API */
     
     func getStudentLocations (completionHandler: (data: [StudentLocation]?, success: Bool, errorString: String?) -> Void) {
+        let methodParameters = [
+            "order": "-updatedAt",
+            "limit": 100,
+        ]
         
-        let request = NSMutableURLRequest(URL: NSURL(string: ParseClient.Constants.BaseURL)!)
+        let request = NSMutableURLRequest(URL: NSURL(string: ParseClient.Constants.BaseURL + ParseClient.escapedParameters(methodParameters))!)
+
         request.addValue(ParseClient.Constants.parseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(ParseClient.Constants.apiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         let session = NSURLSession.sharedSession()
