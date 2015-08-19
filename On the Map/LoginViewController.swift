@@ -29,12 +29,16 @@ class LoginViewController: UIViewController {
         } else if passwordTextField.text.isEmpty {
             self.debugTextLabel.text = "Please enter a password"
         } else {
-            
+            ActivityProgress.shared.showProgressView(view)
             UdacityClient.sharedInstance().login(usernameTextField.text, password: passwordTextField.text, hostViewController: self) { (success, errorString) in
                 if success {
+                    dispatch_async(dispatch_get_main_queue(),{
                     self.completeLogin()
+                    })
                 } else {
+                    dispatch_async(dispatch_get_main_queue(),{
                     self.displayError(errorString)
+                    })
                 }
             }
         }
@@ -64,8 +68,8 @@ class LoginViewController: UIViewController {
     
     func completeLogin() {
         dispatch_async(dispatch_get_main_queue(), {
+            ActivityProgress.shared.hideProgressView()
             self.debugTextLabel.text = ""
-            
             let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarControllerForView") as! UITabBarController
             self.presentViewController(controller, animated: true, completion: nil)
         })
@@ -75,9 +79,14 @@ class LoginViewController: UIViewController {
     
     func displayError(errorString: String?) {
         dispatch_async(dispatch_get_main_queue(), {
+            ActivityProgress.shared.hideProgressView()
             if let errorString = errorString {
                 self.debugTextLabel.text = errorString
             }
+            var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
+            alert.show()
+            return
+
         })
     }
 

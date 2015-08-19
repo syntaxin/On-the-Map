@@ -129,13 +129,16 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             if success {
                 self.studentLocations = appDelegate.studentLocations
                 dispatch_async(dispatch_get_main_queue(), {
+                    ActivityProgress.shared.hideProgressView()
                     self.annotateTheMap()
                 })
             } else {
-                
+                dispatch_async(dispatch_get_main_queue(),{
+                ActivityProgress.shared.hideProgressView()
                 var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
                 alert.show()
                 return
+                })
             }
             
         }
@@ -145,7 +148,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
  /* Deliberate refresh of the map data */
     
     func refreshClick (sender:UIButton!) {
-
+        ActivityProgress.shared.showProgressView(view)
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
         mapView.removeAnnotations( annotationsToRemove )
         
@@ -156,26 +159,31 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 /* Go the add/edit location viewController */
     
     func addLocationClick (sender:UIButton!) {
+        dispatch_async(dispatch_get_main_queue(),{
         let controller = self.storyboard!.instantiateViewControllerWithIdentifier("AddOrEditLocation") as! PostViewController
         self.navigationController!.pushViewController(controller, animated: true)
+        })
     }
 
 /* Logout and go back to signin */
     
     func logout (sender:UIButton!) {
-        
+        ActivityProgress.shared.showProgressView(view)
         UdacityClient.sharedInstance().logout() { (success, errorString) in
             
             if success {
+                dispatch_async(dispatch_get_main_queue(),{
+                ActivityProgress.shared.hideProgressView()
                 let controller = self.storyboard!.instantiateViewControllerWithIdentifier("login") as! LoginViewController
-                
                 self.navigationController!.presentViewController(controller, animated: false, completion: nil)
-            
+                })
             } else {
-                
+                dispatch_async(dispatch_get_main_queue(),{
+                ActivityProgress.shared.hideProgressView()
                 var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Could not logout")
                 alert.show()
                 return
+                })
             }
         }
     }

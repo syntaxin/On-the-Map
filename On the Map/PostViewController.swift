@@ -31,8 +31,8 @@ class PostViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-/* Prepare the UI */
+        
+        /* Prepare the UI */
         
         self.tabBarController?.tabBar.hidden = true
         self.addLocationButton.hidden = true
@@ -40,22 +40,24 @@ class PostViewController: UIViewController, MKMapViewDelegate {
         mapView.delegate = self
         
     }
-/* Check to see if the location can be found and if so, render and animate the map so the user knows something is happening */
+    /* Check to see if the location can be found and if so, render and animate the map so the user knows something is happening */
     
     @IBAction func findLocation(sender: AnyObject) {
-        
+        ActivityProgress.shared.showProgressView(view)
         localSearchRequest = MKLocalSearchRequest()
         localSearchRequest.naturalLanguageQuery = inputTextField.text
         localSearch = MKLocalSearch(request: localSearchRequest)
         localSearch.startWithCompletionHandler { (localSearchResponse, error) -> Void in
             
             if localSearchResponse == nil{
-                var alert = UIAlertView(title: nil, message: "Place not found", delegate: self, cancelButtonTitle: "Try again")
-                alert.show()
-                return
-                
+                dispatch_async(dispatch_get_main_queue(),{
+                    ActivityProgress.shared.hideProgressView()
+                    var alert = UIAlertView(title: nil, message: "Place not found", delegate: self, cancelButtonTitle: "Try again")
+                    alert.show()
+                    return
+                })
             } else {
-            
+                ActivityProgress.shared.hideProgressView()
                 let annotationsToRemove = self.mapView.annotations.filter { $0 !== self.mapView.userLocation }
                 self.mapView.removeAnnotations( annotationsToRemove )
                 
@@ -86,8 +88,8 @@ class PostViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-
-/* Add the selected location and check to make sure a link is included.  If the user exists, choose to update.  If they do not, add it to the datastore */
+    
+    /* Add the selected location and check to make sure a link is included.  If the user exists, choose to update.  If they do not, add it to the datastore */
     
     @IBAction func addLocation(sender: AnyObject) {
         
@@ -96,50 +98,56 @@ class PostViewController: UIViewController, MKMapViewDelegate {
             alert.show()
             return
         }
-        
+        ActivityProgress.shared.showProgressView(view)
         ParseClient.sharedInstance().getStudentLocation(){ success, data, errorString in
             if success {
-
-
-                    ParseClient.sharedInstance().putStudentLocation(data,location:self.locationTitle, mediaURL: self.inputTextField.text, latitude: self.lat, longitude: self.long){ success, errorString in
+                
+                
+                ParseClient.sharedInstance().putStudentLocation(data,location:self.locationTitle, mediaURL: self.inputTextField.text, latitude: self.lat, longitude: self.long){ success, errorString in
+                    
+                    if success {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            ActivityProgress.shared.hideProgressView()
+                            let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarControllerForView") as! UITabBarController
+                            self.presentViewController(controller, animated: true, completion: nil)
+                        })
                         
-                        if success {
-                            dispatch_async(dispatch_get_main_queue(), {
-                                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarControllerForView") as! UITabBarController
-                                self.presentViewController(controller, animated: true, completion: nil)
-                            })
-                            
-                        } else {
-                            
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(),{
+                            ActivityProgress.shared.hideProgressView()
                             var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
                             alert.show()
                             return
-                        }
+                        })
                     }
-            
+                }
+                
             } else {
                 
                 ParseClient.sharedInstance().postStudentLocation(self.locationTitle, mediaURL: self.inputTextField.text, latitude: self.lat, longitude: self.long){ success, errorString in
                     
                     if success {
-                            dispatch_async(dispatch_get_main_queue(), {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            ActivityProgress.shared.hideProgressView()
                             let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarControllerForView") as! UITabBarController
                             self.presentViewController(controller, animated: true, completion: nil)
                         })
-
-                    } else {
                         
-                        var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
-                        alert.show()
-                        return
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(),{
+                            ActivityProgress.shared.hideProgressView()
+                            var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
+                            alert.show()
+                            return
+                        })
                     }
                 }
             }
         }
-
+        
     }
-  
-/* Color the pin the same as personal pins on the map view (purple) */
+    
+    /* Color the pin the same as personal pins on the map view (purple) */
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         
@@ -159,9 +167,9 @@ class PostViewController: UIViewController, MKMapViewDelegate {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             
             return pinView
-        
+            
         }
     }
-
+    
     
 }

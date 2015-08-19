@@ -53,9 +53,11 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
                     self.studentLocations = appDelegate.studentLocations
                 } else
                 {
+                    dispatch_async(dispatch_get_main_queue(),{
                     var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
                     alert.show()
                     return
+                    })
                 }
                 
             }
@@ -102,18 +104,24 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
 /* Deliberately refresh the list view */
     
     func refreshClick (sender:UIButton!) {
-        
+        ActivityProgress.shared.showProgressView(view)
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         ParseClient.sharedInstance().refreshStudentLocations { (success, errorString) in
             
             if success {
+                dispatch_async(dispatch_get_main_queue(),{
+                ActivityProgress.shared.hideProgressView()
                 self.studentLocations = appDelegate.studentLocations
                 self.tableViewController.tableView.reloadData()
+                })
             } else {
+                dispatch_async(dispatch_get_main_queue(),{
+                ActivityProgress.shared.hideProgressView()
                 var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Try again")
                 alert.show()
                 return
+                })
             }
    
         }
@@ -130,18 +138,22 @@ class TableTabbedViewController: UIViewController, UITableViewDataSource, UITabl
 /* Logout of the app go back to login */
     
     func logout (sender:UIButton!) {
-        
+        ActivityProgress.shared.showProgressView(view)
         UdacityClient.sharedInstance().logout() { (success, errorString) in
             
             if success {
+                dispatch_async(dispatch_get_main_queue(),{
+                ActivityProgress.shared.hideProgressView()
                 let controller = self.storyboard!.instantiateViewControllerWithIdentifier("login") as! LoginViewController
                 self.navigationController!.presentViewController(controller, animated: false, completion: nil)
-                
+                })
             } else {
-                
+                dispatch_async(dispatch_get_main_queue(),{
+                ActivityProgress.shared.hideProgressView()
                 var alert = UIAlertView(title: nil, message: errorString, delegate: self, cancelButtonTitle: "Could not logout")
                 alert.show()
                 return
+                })
             }
         }
     }
